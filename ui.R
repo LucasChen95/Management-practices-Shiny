@@ -126,9 +126,10 @@ shinyUI(tagList(
                                     "<!-- Footer -->
                                     <footer class='page-footer font-large indigo'>
                                     <!-- Copyright -->
-                                    <div class='footer-copyright text-center py-3'>© {yr}: Lucas Chen
+                                    <div class='footer-copyright text-center py-3'> Chen, L., & Sanderson, L. (2022). <em>The Evolution of Management Practices in New Zealand, 2005-2017: Interactive data appendix.</em> Available at: <a href='https://mbienz.shinyapps.io/management_practices_data_appendix/'> https://mbienz.shinyapps.io/management_practices_data_appendix/ </a>
                                     <br>
-                                    <a href='https://'> Source code </a>
+                                    <br>
+                                    <a href='https://github.com/LucasChen95/Management-practices-Shiny'> Source code </a>
                                     </div>
                                     <!-- Copyright -->
                                     </footer>
@@ -341,12 +342,12 @@ shinyUI(tagList(
                                  <ul type = "1">
                                     <li><b>Continuers – within:</b> change due to within-firm changes in practices among continuing firms.</li>
                                     <li><b>Continuers – across:</b> change due to changes in the weights applied to continuing firms over time. In the firm-level decomposition this reflects changing survey weights, while in the employment-weighted decomposition it captures changing employment in the survey sample and in the population over time.</li>
+                                    <li><b>Continuers – enter:</b> change in the firm-size specific index due to firms which enter the relevant firm size group due to changes in firm-level employment over the period.</li>
+                                    <li><b>Continuers – exit:</b> change in the firm-size specific index due to firms which exit the relevant firm size group due to changes in firm-level employment over the period.</li>
                                     <li><b>Entrants:</b> change due to new firms born between 2005 and 2017.</li>
                                     <li><b>Exiters:</b> change due to the exit of firms between 2005 and 2017.</li>
                                     <li><b>Joiners:</b> change due to firms which were included in the 2017 survey but not in the 2005 survey (but were active in both years).</li>
                                     <li><b>Leavers:</b> change due to firms which were included in the 2005 survey but not in the 2017 survey (but were active in both years).</li>
-                                    <li><b>Continuers – enter group:</b> change in the firm-size specific index due to firms which enter the relevant firm size group due to changes in firm-level employment over the period.</li>
-                                    <li><b>Continuers – exit group:</b> change in the firm-size specific index due to firms which exit the relevant firm size group due to changes in firm-level employment over the period.</li>
                                  </ul>
                                  Solid bars indicate that the change over the period for the relevant group (size group or industry) is statistically significant (p-value < 0.10).
                                  </font>'
