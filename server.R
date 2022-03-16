@@ -11,6 +11,86 @@ library(glue)
 
 shinyServer(function(input, output) {
         
+        convert.practice <- 
+                function(x) {
+                        return(factor(x, 
+                                      levels = c("Strategy - Importance of pricing of goods and services", "Strategy - Importance of quality of goods and services",
+                                                 "Strategy - Importance of flexibility/ability to make changes", "Strategy - Importance of delivery to customers",
+                                                 "Strategy - Importance of innovation", "Focus on existing domestic markets",
+                                                 "Focus on existing export markets", "Focus on new domestic markets",
+                                                 "Focus on new export markets", 
+                                                 
+                                                 "Planning horizon for goals", "Goals - formal process",
+                                                 "Goals - incorporate customer requirements", "Goals - incorporate supplier requirements",
+                                                 "Goals - incorporate employee requirements", "Vision for the future",
+                                                 "Promotes company values to employees", "Regular communication regarding plans",
+                                                 "Regular communication regarding goals", "Regular communication regarding major changes",
+                                                 "Regular communication regarding potential improvements",
+                                                 
+                                                 "Set procedure for customer complaints", "Contact with major customers",
+                                                 "Systematically measure customer satisfaction", "Work with customers to develop or improve products",
+                                                 "Systems for measuring supplier quality", "Work with suppliers to improve processes",
+                                                 "Contact with suppliers", "Staff authority to contact suppliers",
+                                                 
+                                                 "Formal information management system", "Regular work to assess acheivement of goals",
+                                                 "Assess performance based on financial measures", "Assess performance based on cost measures",
+                                                 "Assess performance based on operational measures", "Assess performance based on quality measures",
+                                                 "Assess performance based on innovation measures", "Assess performance based on human resources",
+                                                 
+                                                 "Systematic comparison with NZ firms in same industry", "Systematic comparison with overseas firms in same industry",
+                                                 "Systematic comparison with NZ firms in different industry", "Systematic comparison with overseas firms in different industry",
+                                                 "Monitor competitors goods or services", "Identify risks or opportunities from technology",
+                                                 "Identify risks or opportunities from market conditions", "Identify risks or opportunities from skill availability",
+                                                 "Identify risks or opportunities from competitors", "Identify risks or opportunities from regulations",
+                                                 
+                                                 "Formally assess employee job satisfaction", "Formal performance reviews",
+                                                 "Pay for performance schemes", "Employees participate in training - any",
+                                                 "Systematic assessment of skill gaps", "Processes to manage health and safety",
+                                                 
+                                                 "Extent of quality assessment", "Staff encouraged to identify problems",
+                                                 "Staff encouraged to suggest improvements", "Quality management systems certification",
+                                                 "Documented operating processes/systems", "Measures to reduce environmental impact"),
+                                      
+                                      labels = c("Strategy - Importance of pricing of goods and services", "Strategy - Importance of quality of goods and services",
+                                                 "Strategy - Importance of flexibility/ability to make changes", "Strategy - Importance of delivery to customers",
+                                                 "Strategy - Importance of innovation", "Focus on existing domestic markets",
+                                                 "Focus on existing export markets", "Focus on new domestic markets",
+                                                 "Focus on new export markets", 
+                                                 
+                                                 "Planning horizon for goals", "Goals - formal process",
+                                                 "Goals - incorporate customer requirements", "Goals - incorporate supplier requirements",
+                                                 "Goals - incorporate employee requirements", "Vision for the future",
+                                                 "Promotes company values to employees", "Regular communication regarding plans",
+                                                 "Regular communication regarding goals", "Regular communication regarding major changes",
+                                                 "Regular communication regarding potential improvements",
+                                                 
+                                                 "Set procedure for customer complaints", "Contact with major customers",
+                                                 "Systematically measure customer satisfaction", "Work with customers to develop or improve products",
+                                                 "Systems for measuring supplier quality", "Work with suppliers to improve processes",
+                                                 "Contact with suppliers", "Staff authority to contact suppliers",
+                                                 
+                                                 "Formal information management system", "Regular work to assess acheivement of goals",
+                                                 "Assess performance based on financial measures", "Assess performance based on cost measures",
+                                                 "Assess performance based on operational measures", "Assess performance based on quality measures",
+                                                 "Assess performance based on innovation measures", "Assess performance based on human resources",
+                                                 
+                                                 "Systematic comparison with NZ firms in same industry", "Systematic comparison with overseas firms in same industry",
+                                                 "Systematic comparison with NZ firms in different industry", "Systematic comparison with overseas firms in different industry",
+                                                 "Monitor competitors goods or services", "Identify risks or opportunities from technology",
+                                                 "Identify risks or opportunities from market conditions", "Identify risks or opportunities from skill availability",
+                                                 "Identify risks or opportunities from competitors", "Identify risks or opportunities from regulations",
+                                                 
+                                                 "Formally assess employee job satisfaction", "Formal performance reviews",
+                                                 "Pay for performance schemes", "Employees participate in training - any",
+                                                 "Systematic assessment of skill gaps", "Processes to manage health and safety",
+                                                 
+                                                 "Extent of quality assessment", "Staff encouraged to identify problems",
+                                                 "Staff encouraged to suggest improvements", "Quality management systems certification",
+                                                 "Documented operating processes/systems", "Measures to reduce environmental impact")
+                                      )
+                                )
+                        }
+        
         convert.size <-
                 function(x) {
                         return(factor(x,
@@ -90,8 +170,9 @@ shinyServer(function(input, output) {
                        aggregate_change = change05_17, 
                        pct_change = pct_change05_17,
                        p_value = prtest05_17) %>%
-                filter(variable_code != "smp_index") %>% 
-                mutate(size = convert.size(size),
+                dplyr::filter(variable_code != "smp_index") %>% 
+                mutate(practice_name = convert.practice(practice_name),
+                       size = convert.size(size),
                        industry = convert.industry(industry),
                        cluster = convert.cluster(cluster),
                        weight = convert.weight(weight),
@@ -99,43 +180,53 @@ shinyServer(function(input, output) {
                        `2009` = ifelse(`2009`>1, 1, `2009`),
                        `2013` = ifelse(`2013`>1, 1, `2013`),
                        `2017` = ifelse(`2017`>1, 1, `2017`)) %>% 
-                mutate_at(vars(1:6), as.factor) %>% 
-                mutate_at(vars(7:22), as.numeric) %>%
-                mutate_at(vars(23:26), as.factor)  
+                mutate_at(vars(1,6,23,24,26), as.factor) %>% 
+                mutate_at(vars(7:22), as.numeric) %>% 
+                arrange(practice_name, cluster, size, industry, weight)
         
         
-        dat_plot <- dat %>% 
-                        dplyr::select(practice_name, practice_shortname, 
-                                      cluster:weight, 
-                                      `2005`:aggregate_change, 
-                                      p_value)
+        dat_plot <- inner_join(
+                                dat %>%
+                                dplyr::select(practice_name, practice_shortname, 
+                                              cluster:weight, 
+                                              `2005`:aggregate_change,
+                                              p_value
+                                              ) %>% 
+                                dplyr::select(-starts_with("se")) %>% 
+                                pivot_longer(c(`2005`, `2009`, `2013`, `2017`), 
+                                             names_to = "year",
+                                             values_to = "value"
+                                             ) %>% 
+                                mutate(year = as.numeric(year))
+                        
+                                ,
+                
+                                dat %>% 
+                                dplyr::select(practice_name, practice_shortname, 
+                                              cluster:weight, 
+                                              `2005`:aggregate_change,
+                                              p_value
+                                              ) %>%
+                                dplyr::select(-`2005`, -`2009`, -`2013`, -`2017`) %>%
+                                pivot_longer(c(starts_with("se")), 
+                                             names_to = "year", 
+                                             values_to = "se"
+                                             ) %>% 
+                                mutate(year = as.numeric(gsub("se_", "", year))),
+                                
+                                by = c("practice_name", "practice_shortname", "cluster", "size", "industry", "weight", "aggregate_change", "p_value", "year")
+                              ) %>% 
+                        arrange(practice_name, cluster, size, industry, weight) %>% 
+                        mutate(practice_shortname = factor(practice_shortname,
+                                                           levels = unique(practice_shortname))
+                               )
         
-        dat_plot <- merge(
-                        dat_plot %>% 
-                        dplyr::select(-starts_with("se")) %>% 
-                        pivot_longer(c(`2005`, `2009`, `2013`, `2017`), 
-                                     names_to = "year",
-                                     values_to = "value"
-                                     ) %>% 
-                        mutate(year = as.numeric(year))
-                        ,
-                        dat_plot %>% 
-                        select(-`2005`, -`2009`, -`2013`, -`2017`) %>%
-                        pivot_longer(c(starts_with("se")), 
-                                     names_to = "year", 
-                                     values_to = "se"
-                                     ) %>% 
-                        mutate(year = as.numeric(gsub("se_", "", year)))
-                        ) %>% 
-                dplyr::arrange(practice_name, industry, size, weight, year) %>% 
-                as_tibble()
         
-        
-        dat2 <- read_excel("Data/2c_decomp_CONF.xlsx", 
-                           range = cell_cols("D:J"), 
-                           sheet =  "pw_anz06_transpose"
-                           ) %>% 
-                rbind(read_excel("Data/2c_decomp_CONF.xlsx", 
+        dat2 <- rbind(read_excel("Data/2c_decomp_CONF.xlsx", 
+                                 range = cell_cols("D:J"), 
+                                 sheet =  "pw_anz06_transpose"
+                                 ),
+                      read_excel("Data/2c_decomp_CONF.xlsx", 
                                  range = cell_cols("D:J"), 
                                  sheet = "ew_anz06_transpose"
                                  )
@@ -173,8 +264,8 @@ shinyServer(function(input, output) {
                                      names_to = "Type", 
                                      values_to = "Decomposition"
                                      ) %>% 
-                mutate(significance = ifelse(p_value < 0.1, TRUE, 
-                                             FALSE))
+                        mutate(significance = ifelse(p_value < 0.1, TRUE, 
+                                                     FALSE))
         
         
         dat3 <- read_excel("Data/2a_decomp_CONF.xlsx", 
@@ -296,6 +387,7 @@ shinyServer(function(input, output) {
                                limit_max = ifelse(is.na(limit_max), 0.0275, limit_max),
                                limit_min = ifelse(is.na(limit_min), -0.0275, limit_min))
         
+        
         ### Tab 1; Prevalence of practices ###
         tab1_reac1 <- 
                 reactive({
@@ -303,7 +395,9 @@ shinyServer(function(input, output) {
                                         dplyr::filter(practice_name %in% input$tab1_input,
                                                       size == "All",
                                                       industry == "All"
-                                                      ) 
+                                                      ) %>% 
+                                        mutate(practice_shortname = factor(practice_shortname,
+                                                                           levels = unique(dat_plot$practice_shortname)))
                 
                         return(dat_final)
                 })
@@ -378,13 +472,13 @@ shinyServer(function(input, output) {
                         layout(legend = list(title=list(text='<b> Practice: </b>'),
                                              x = 0.0225, y = -0.125, 
                                              orientation = 'h')
-                               ) %>%  #yaxis = list(autorange = TRUE)
+                               ) %>%  
                         config(displaylogo = FALSE,
                                displayModeBar = TRUE,
                                modeBarButtonsToRemove = c('zoom2d','pan2d','select2d',
                                                           'lasso2d','zoomIn2d','zoomOut2d',
                                                           'toggleSpikelines', 'hoverClosestCartesian', 
-                                                          'hoverCompareCartesian') #'resetScale2d' 'autoScale2d'
+                                                          'hoverCompareCartesian') 
                         )
                 
                 
@@ -537,13 +631,13 @@ shinyServer(function(input, output) {
                         layout(legend = list(title=list(text='<b> Size: </b>'),
                                              x = 0.0225, y = -0.125, 
                                              orientation = 'h')
-                               ) %>%  #yaxis = list(autorange = TRUE)
+                               ) %>%  
                         config(displaylogo = FALSE,
                                displayModeBar = TRUE,
                                modeBarButtonsToRemove = c('zoom2d','pan2d','select2d',
                                                           'lasso2d','zoomIn2d','zoomOut2d',
                                                           'toggleSpikelines', 'hoverClosestCartesian', 
-                                                          'hoverCompareCartesian') #'resetScale2d' 'autoScale2d'
+                                                          'hoverCompareCartesian') 
                         )
                 
                 
@@ -1087,7 +1181,8 @@ shinyServer(function(input, output) {
                         dat_i <- dat4_plot %>% 
                                         dplyr::filter(practice_name %in% input$tab6_input,
                                                       size == "All",
-                                                      industry %in% input$tab6_industry
+                                                      industry %in% input$tab6_industry,
+                                                      !(Group %in% c("Continuers - enter", "Continuers - exit"))
                                                       ) 
                         
                         dat_final <- rbind(dat_s, dat_i) %>% 

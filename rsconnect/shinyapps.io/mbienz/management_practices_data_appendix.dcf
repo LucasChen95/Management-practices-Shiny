@@ -1,0 +1,14 @@
+name: management_practices_data_appendix
+title:
+username:
+account: mbienz
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 5792383
+bundleId: 5689390
+url: https://mbienz.shinyapps.io/management_practices_data_appendix/
+when: 1647397920.0699
+lastSyncTime: 1647397920.0699
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: .RData

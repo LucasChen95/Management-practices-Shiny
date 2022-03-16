@@ -20,12 +20,42 @@ library(haven)
 
 ### Aggregate changes
 
-inpts <- list(practice_name = read_stata("Data/T1_overall_wide.dta") %>% 
-                select(long_name) %>% 
-                filter(long_name != "SMP index") %>% 
-                unique() %>% 
-                #arrange(long_name) %>% 
-                pull(), ## pull = $ which is used to get rid of dataframe attr
+inpts <- list(practice_name = c("Strategy - Importance of pricing of goods and services", "Strategy - Importance of quality of goods and services",
+                                "Strategy - Importance of flexibility/ability to make changes", "Strategy - Importance of delivery to customers",
+                                "Strategy - Importance of innovation", "Focus on existing domestic markets",
+                                "Focus on existing export markets", "Focus on new domestic markets",
+                                "Focus on new export markets", 
+                                
+                                "Planning horizon for goals", "Goals - formal process",
+                                "Goals - incorporate customer requirements", "Goals - incorporate supplier requirements",
+                                "Goals - incorporate employee requirements", "Vision for the future",
+                                "Promotes company values to employees", "Regular communication regarding plans",
+                                "Regular communication regarding goals", "Regular communication regarding major changes",
+                                "Regular communication regarding potential improvements",
+                                
+                                "Set procedure for customer complaints", "Contact with major customers",
+                                "Systematically measure customer satisfaction", "Work with customers to develop or improve products",
+                                "Systems for measuring supplier quality", "Work with suppliers to improve processes",
+                                "Contact with suppliers", "Staff authority to contact suppliers",
+                                
+                                "Formal information management system", "Regular work to assess acheivement of goals",
+                                "Assess performance based on financial measures", "Assess performance based on cost measures",
+                                "Assess performance based on operational measures", "Assess performance based on quality measures",
+                                "Assess performance based on innovation measures", "Assess performance based on human resources",
+                                
+                                "Systematic comparison with NZ firms in same industry", "Systematic comparison with overseas firms in same industry",
+                                "Systematic comparison with NZ firms in different industry", "Systematic comparison with overseas firms in different industry",
+                                "Monitor competitors goods or services", "Identify risks or opportunities from technology",
+                                "Identify risks or opportunities from market conditions", "Identify risks or opportunities from skill availability",
+                                "Identify risks or opportunities from competitors", "Identify risks or opportunities from regulations",
+                                
+                                "Formally assess employee job satisfaction", "Formal performance reviews",
+                                "Pay for performance schemes", "Employees participate in training - any",
+                                "Systematic assessment of skill gaps", "Processes to manage health and safety",
+                                
+                                "Extent of quality assessment", "Staff encouraged to identify problems",
+                                "Staff encouraged to suggest improvements", "Quality management systems certification",
+                                "Documented operating processes/systems", "Measures to reduce environmental impact"),
               
                 size = c("All", "6-19 RME", "20-49 RME", "50-99 RME",
                        "100+ RME"),
@@ -95,9 +125,6 @@ shinyUI(tagList(
                                        The full research paper can be accessed via:<a href="https://www.mbie.govt.nz/data-and-analysis/" target="_blank"> https://www.mbie.govt.nz/data-and-analysis/ </a>
                                        <br>
                                        <br>
-                                       For any enquiries regarding the analysis and results, please contact: <a href = "mailto:Lynda.Sanderson@mbie.govt.nz">Lynda.Sanderson@mbie.govt.nz</a>
-                                       <br>
-                                       <br>
                                        </font>')
                                       ),
                             sidebarPanel(h4("Disclaimer"),
@@ -163,7 +190,7 @@ shinyUI(tagList(
                            inpts$practice_name, 
                            multiple = TRUE,
                            options = list(maxItems = 20),
-                           selected = "Assess performance based on cost measures"
+                           selected = "Strategy - Importance of pricing of goods and services"
                            ) 
                ),
                
@@ -201,7 +228,7 @@ shinyUI(tagList(
                             h4('Inputs:'),
                             selectInput('tab2_input', "Practice name",
                                         inpts$practice_name, 
-                                        selected = "Assess performance based on cost measures"
+                                        selected = "Strategy - Importance of pricing of goods and services"
                                         ), ###
                             selectInput('tab2_size', strong('Size'),
                                         inpts$size, 
@@ -314,7 +341,7 @@ shinyUI(tagList(
                             selectInput('tab5_input', 'Practice name',
                                         inpts$practice_name,
                                         multiple = TRUE,
-                                        selected = c("Assess performance based on cost measures", "Assess performance based on financial measures")
+                                        selected = c("Strategy - Importance of pricing of goods and services", "Strategy - Importance of quality of goods and services")
                                         )
                             ),
                mainPanel(
@@ -357,7 +384,7 @@ shinyUI(tagList(
                             selectInput('tab6_input', 'Practice name',
                                         inpts$practice_name,
                                         multiple = FALSE,
-                                        selected = c("Assess performance based on cost measures")
+                                        selected = c("Strategy - Importance of pricing of goods and services")
                                         ),
                             selectInput('tab6_size', strong('Size'),
                                         inpts$size[-1],
