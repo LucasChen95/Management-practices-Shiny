@@ -122,7 +122,10 @@ shinyUI(tagList(
                                        Business, Innovation and Employment</em>. This tool runs best on Google Chrome. 
                                        <br>
                                        <br>
-                                       The full research paper can be accessed via:<a href="https://www.mbie.govt.nz/data-and-analysis/" target="_blank"> https://www.mbie.govt.nz/data-and-analysis/ </a>
+                                       The summary paper can be accessed via:<a href="https://www.mbie.govt.nz/dmsdocument/19554-the-evolution-of-management-practices-in-new-zealand-summary" target="_blank"> https://www.mbie.govt.nz/dmsdocument/19554-the-evolution-of-management-practices-in-new-zealand-summary </a>
+                                       <br>
+                                       <br>
+                                       The full research paper can be accessed via:<a href="https://www.mbie.govt.nz/dmsdocument/19551-the-evolution-of-management-practices-in-new-zealand-full-report" target="_blank"> https://www.mbie.govt.nz/dmsdocument/19551-the-evolution-of-management-practices-in-new-zealand-full-report </a>
                                        <br>
                                        <br>
                                        </font>')
